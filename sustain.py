@@ -35,10 +35,10 @@ class SUSTAIN:
         self.dimmins = dimmins # same as ^, but min
         self.dimtypes = dimtypes # string with D characters; c = continuous, d = discrete (eg 'ccd')
         self.num_slots = num_slots# the # levels per dimension [1,2,..n]; in case of continuous dimension, dim should be set to 1
-        self.featuremask = np.append(np.zeros(dimmaxes.size-1, dtype = float), 1)
-        self.categorymask = np.append(np.ones(dimmaxes.size-1, dtype = float), 0)
+        self.featuremask = np.append(np.zeros(dimmaxes.size-1, dtype = float), 1) # masks the features
+        self.categorymask = np.append(np.ones(dimmaxes.size-1, dtype = float), 0) # masks the category
         self.featureranges = np.abs(dimmaxes-dimmins) # scaling variables (for distance metric)
-        if 'd' in self.dimtypes:
+        if 'd' in self.dimtypes: # set featureranges for nominal dimensions to 2
             nominds = np.array([i for i, char in enumerate(self.dimtypes) if char == 'd']) # find indices of nominal dims
             self.featureranges[nominds] = 2
 
@@ -56,7 +56,7 @@ class SUSTAIN:
         target[int(idx)] = 1.0
         return target.astype(float)
 
-    ## Convert item from flat vector to 
+    ## Convert item from flat vector to numpy object
     def convert_item(self, item):
         iobj = np.empty(len(item), dtype = object) # numpy obj to store each dimension's array
         idx = 0
